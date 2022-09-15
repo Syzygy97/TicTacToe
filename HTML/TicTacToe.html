@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>TikiTakiTow</title>
+    <link rel="shortcut icon" type="image/png" href="/assets/favicon.png" />
+    <link rel="stylesheet" href="../styles/main.css" />
+    <script src="../JS/index.js" defer></script>
+  </head>
+  <body>
+    <h1 class="title">TicTacToe</h1>
+    <header class="scoresAndNames">
+      <span class="1pScore">0</span>
+      <input type="text" class="1P">
+      <input type="text" class="2P">
+      <span class="2pScore">0</span>
+    </header>
+    <figure class="ticTacToe-container" id="ticTacToe-container">
+      <div class="squares" data-square></div>
+      <div class="squares" data-square></div>
+      <div class="squares" data-square></div>
+      <div class="squares" data-square></div>
+      <div class="squares" data-square></div>
+      <div class="squares" data-square></div>
+      <div class="squares" data-square></div>
+      <div class="squares" data-square></div>
+      <div class="squares" data-square></div>
+    </figure>
+    <footer class="options show">
+      <button class="undo">UNDO &#8630</button>
+      <button class="restartBtn">RESTART &#10226</button>
+      <button class="redo">REDO &#8631</button>
+    </footer>
+    <div class="result" id="result">
+      <div data-winner></div>
+      <div class="undoRestartButton">
+        <button class="undoBtn">UNDO &#8630</button>
+        <button id="restartBtn" data-restart-button>RESTART &#10226</button>
+      </div>
+    </div>
+  </body>
+</html>
