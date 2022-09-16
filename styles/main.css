@@ -186,18 +186,24 @@ body {
 
 .result button {
   font-size: 3rem;
-  background: antiquewhite;
-  border: 3px solid black;
-  border-radius: 10px;
   padding: 0.75rem 1rem;
-  cursor: pointer;
-  transition: color, background 200ms ease-out;
 }
 
-.result button:hover {
+.result button,
+.options > button {
+  border: 3px solid black;
+  border-radius: 10px;
+  background: antiquewhite;
+  cursor: pointer;
+  transition: color, background 250ms ease-in, font-weight 250ms linear;
+}
+
+.result button:hover,
+.options > button:hover {
   background: rgba(0, 0, 0, 0.9);
   color: antiquewhite;
   border-color: antiquewhite;
+  font-weight: 500;
 }
 
 .show {
