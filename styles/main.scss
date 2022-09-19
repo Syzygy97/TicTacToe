@@ -23,7 +23,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 18rem;
+  gap: 20rem;
 }
 .markSymbols > span {
   font-size: 2rem;
@@ -49,10 +49,13 @@ body {
   text-overflow: ellipsis;
   padding: 0.25rem 0.35rem;
 }
-.swapSymbols > i {
+.scoresAndNames > .swapButton {
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 2.5rem;
+  text-align: center;
+  width: 4ch;
 }
+
 .scoresAndNames > input::placeholder {
   font-size: 1rem;
 }

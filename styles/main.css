@@ -21,7 +21,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 18rem;
+  gap: 20rem;
 }
 
 .markSymbols > span {
@@ -52,9 +52,11 @@ body {
   padding: 0.25rem 0.35rem;
 }
 
-.swapSymbols > i {
+.scoresAndNames > .swapButton {
   cursor: pointer;
-  font-size: 2rem;
+  font-size: 2.5rem;
+  text-align: center;
+  width: 4ch;
 }
 
 .scoresAndNames > input::-moz-placeholder {

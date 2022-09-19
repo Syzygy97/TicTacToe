@@ -14,7 +14,8 @@ const xPlayerName = document.querySelector(".xPlayerName");
 const oPlayerName = document.querySelector(".oPlayerName");
 const xSymbol = document.querySelector(".fa-solid.fa-x");
 const oSymbol = document.querySelector(".fa-solid.fa-o");
-const swapSymbolsButton = document.querySelector("[data-swap-symbols]");
+const swapButton = document.querySelector("[data-swap-button]");
+const swapLogo = document.querySelector(".fa-solid.fa-arrow-right-arrow-left");
 const winning_combinations = [
   [0, 1, 2],
   [0, 4, 8],
@@ -45,7 +46,7 @@ let oScore = 0;
 gameStart();
 readBoardData();
 
-swapSymbolsButton.addEventListener("click", () => {
+swapButton.addEventListener("click", () => {
   swapNames();
   swapScores();
 });
@@ -75,6 +76,8 @@ function clickEvent(e) {
     changeTurns();
     showHoverClass();
   }
+  console.log("clicked - board", board_data);
+  console.log("clicked - history", history_data);
 }
 
 function storeBoardData(cell) {
@@ -83,12 +86,11 @@ function storeBoardData(cell) {
   let row = (indexPos - col) / 3;
   board_data[row][col] = player;
   player *= -1;
-  console.log("board", board_data);
   history_data[moves] = deepClone(board_data);
   moves++;
-  console.log("moves clicked", moves);
-  console.log("history", history_data);
   readHistoryData();
+  console.log("board", board_data);
+  console.log("history", history_data);
 }
 
 function readBoardData() {
@@ -107,15 +109,24 @@ function readBoardData() {
 }
 
 function readHistoryData() {
-  // history_data = history_data;
   if (history_data.length > 0) {
     undoButton.style.pointerEvents = "auto";
     undoButton.style.opacity = "1";
+    swapButton.innerText = "V.S.";
+    swapButton.style.pointerEvents = "none";
   }
 }
 
 function undoMove() {
-  // console.log("undo");
+  console.log("undo");
+  // history_data[moves] = deepClone(board_data);
+  moves--;
+  board_data = history_data[moves - 1];
+  readBoardData();
+  console.log(moves);
+  console.log("board", board_data);
+  console.log("history", history_data);
+  console.log("moves", history_data[moves]);
   // moves--;
   // board_data = history_data[moves];
   // readBoardData();
@@ -144,8 +155,14 @@ function undoMove() {
 }
 
 function redoMove() {
-  readBoardData();
   console.log("redo");
+  moves++;
+  board_data = history_data[moves - 1];
+  readBoardData();
+  console.log(moves);
+  console.log("board", board_data);
+  console.log("history", history_data);
+  console.log("moves", history_data[moves]);
 }
 
 function placeMark(cell, currentClass) {
@@ -180,6 +197,8 @@ function gameStart() {
   if (history_data.length === 0) {
     undoButton.style.pointerEvents = "none";
     undoButton.style.opacity = "0.5";
+    swapButton.innerHTML = "&#8644";
+    swapButton.style.pointerEvents = "auto";
   }
   squares.forEach((square) => {
     square.classList.remove(x_class);
@@ -200,8 +219,6 @@ function gameEnd(draw) {
     checkPlayerNames();
     addScore();
   }
-  console.log("x total", xScore);
-  console.log("o total", oScore);
   resultMessage.classList.add("show");
   // setTimeout(() => {
   //   resultMessage.classList.add("show");
