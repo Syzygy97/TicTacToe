@@ -8,6 +8,10 @@ const restartButton = document.querySelector("[data-restart-button]");
 const resultMessage = document.querySelector(".result");
 const winningMessage = document.querySelector("[data-winner]");
 const restartButtonInResults = document.querySelector("#restartBtnInResults");
+const xPlayerScore = document.querySelector(".xScore");
+const oPlayerScore = document.querySelector(".oScore");
+const xPlayerName = document.querySelector(".xPlayer");
+const oPlayerName = document.querySelector(".oPlayer");
 const winning_combinations = [
   [0, 1, 2],
   [0, 4, 8],
@@ -22,16 +26,18 @@ const winning_combinations = [
 const deepClone = (items) =>
   items.map((item) => (Array.isArray(item) ? deepClone(item) : item));
 
-let board_data = [
-  [0, 0, 0],
-  [0, 0, 0],
-  [0, 0, 0],
-];
+// let board_data = [
+//   [0, 0, 0],
+//   [0, 0, 0],
+//   [0, 0, 0],
+// ];
 
-let history_data = [];
+// let history_data = [];
 // let xTurn;
 let player = 1;
 let moves = 0;
+let xScore = 0;
+let oScore = 0;
 
 gameStart();
 readBoardData();
@@ -50,9 +56,9 @@ restartButtonInResults.addEventListener("click", gameStart);
 function clickEvent(e) {
   const cell = e.target;
   const currentClass = xTurn ? x_class : o_class;
+  // placeMark(cell, currentClass);
   storeBoardData(cell);
   readBoardData();
-  placeMark(cell, currentClass);
   if (checkForWin(currentClass)) {
     gameEnd(false);
   } else if (checkForDraw()) {
@@ -72,7 +78,9 @@ function storeBoardData(cell) {
   console.log("board", board_data);
   history_data[moves] = deepClone(board_data);
   moves++;
+  console.log("moves clicked", moves);
   console.log("history", history_data);
+  readHistoryData();
 }
 
 function readBoardData() {
@@ -82,16 +90,53 @@ function readBoardData() {
         squares[row * 3 + col].classList.add(x_class);
       } else if (board_data[row][col] === -1) {
         squares[row * 3 + col].classList.add(o_class);
+      } else if (board_data[row][col] === 0) {
+        squares[row * 3 + col].classList.remove(o_class) ||
+          squares[row * 3 + col].classList.remove(x_class);
       }
     }
   }
 }
 
+function readHistoryData() {
+  // history_data = history_data;
+  if (history_data.length > 0) {
+    undoButton.style.pointerEvents = "auto";
+    undoButton.style.opacity = "1";
+  }
+}
+
 function undoMove() {
-  console.log("undo");
+  // console.log("undo");
+  // moves--;
+  // board_data = history_data[moves];
+  // readBoardData();
+  // console.log("moves undo", moves);
+  // console.log(board_data);
+  // console.log(history_data[moves]);
+  // history_data[moves] = deepClone(board_data);
+  // moves--;
+  // board_data_flatten = board_data.flat();
+  // console.log("board flattened", board_data.flat());
+  // console.log(board_data_flatten.lastIndexOf(1));
+  // const currentClass = xTurn ? x_class : o_class;
+  // readBoardData();
+  // history_data[moves] = deepClone(board_data);
+  // moves--;
+  // console.log("before", [history_data[moves]].flat());
+  // for (let row = 0; row < 3; row++) {
+  //   for (let col = 0; col < 3; col++) {
+  //     squares[row * 3 + col].classList.remove(currentClass);
+  //   }
+  // }
+  // history = history_data.pop();
+  // console.log("history after", history_data);
+  // history_data.lastIndexOf(moves) - 1;
+  // console.log(board_data);
 }
 
 function redoMove() {
+  readBoardData();
   console.log("redo");
 }
 
@@ -124,7 +169,10 @@ function gameStart() {
   moves = 0;
   player = 1;
   xTurn = true;
-  readBoardData();
+  if (history_data.length === 0) {
+    undoButton.style.pointerEvents = "none";
+    undoButton.style.opacity = "0.5";
+  }
   squares.forEach((square) => {
     square.classList.remove(x_class);
     square.classList.remove(o_class);
@@ -133,12 +181,15 @@ function gameStart() {
   });
   showHoverClass();
   resultMessage.classList.remove("show");
+  // console.log("board", board_data);
+  console.log("start history", history_data);
 }
 
 function gameEnd(draw) {
   if (draw) {
     winningMessage.innerText = "Draw!";
   } else {
+    addScore();
     winningMessage.innerText = `${xTurn ? "X" : "O"} Wins!`;
   }
   resultMessage.classList.add("show");
@@ -161,4 +212,17 @@ function checkForDraw() {
       square.classList.contains(x_class) || square.classList.contains(o_class)
     );
   });
+}
+
+function addScore() {
+  if (xTurn) {
+    xScore++;
+    xPlayerScore.innerText = xScore;
+    xCurrentScore = xScore;
+    console.log(xCurrentScore);
+  } else if (!xTurn) {
+    oScore++;
+    oPlayerScore.innerText = oScore;
+    oCurrentScore = oScore;
+  }
 }
