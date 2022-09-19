@@ -17,12 +17,22 @@ body {
   font-size: 80px;
 }
 
+.markSymbols {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18rem;
+}
+
+.markSymbols > span {
+  font-size: 2rem;
+}
+
 .scoresAndNames {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1.5rem;
-  gap: 3rem;
+  gap: 2rem;
 }
 
 .scoresAndNames > span {
@@ -40,6 +50,23 @@ body {
   color: white;
   text-overflow: ellipsis;
   padding: 0.25rem 0.35rem;
+}
+
+.swapSymbols > i {
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.scoresAndNames > input::-moz-placeholder {
+  font-size: 1rem;
+}
+
+.scoresAndNames > input:-ms-input-placeholder {
+  font-size: 1rem;
+}
+
+.scoresAndNames > input::placeholder {
+  font-size: 1rem;
 }
 
 .ticTacToe-container {

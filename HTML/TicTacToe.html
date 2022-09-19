@@ -7,13 +7,26 @@
     <link rel="shortcut icon" type="image/png" href="/assets/favicon.png" />
     <link rel="stylesheet" href="../styles/main.css" />
     <script src="../JS/index.js" defer></script>
+    <script src="https://kit.fontawesome.com/0169320a9c.js"
+    crossorigin="anonymous"></script>
   </head>
   <body>
     <h1 class="title">TicTacToe</h1>
+    <div class="markSymbols">
+      <span class="xSymbol">
+        <i class="fa-solid fa-x"></i>
+      </span>
+      <span class="oSymbol">
+        <i class="fa-solid fa-o"></i>
+      </span>
+    </div>
     <header class="scoresAndNames">
       <span class="xScore">0</span>
-      <input type="text" class="xPlayer">
-      <input type="text" class="oPlayer">
+      <input type="text" class="xPlayerName" autocomplete="off" placeholder="enter name">
+      <span class="swapSymbols" data-swap-symbols>
+        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+      </span>
+      <input type="text" class="oPlayerName" autocomplete="off" placeholder="enter name">
       <span class="oScore">0</span>
     </header>
     <figure class="ticTacToe-container" id="ticTacToe-container">

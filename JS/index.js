@@ -10,8 +10,11 @@ const winningMessage = document.querySelector("[data-winner]");
 const restartButtonInResults = document.querySelector("#restartBtnInResults");
 const xPlayerScore = document.querySelector(".xScore");
 const oPlayerScore = document.querySelector(".oScore");
-const xPlayerName = document.querySelector(".xPlayer");
-const oPlayerName = document.querySelector(".oPlayer");
+const xPlayerName = document.querySelector(".xPlayerName");
+const oPlayerName = document.querySelector(".oPlayerName");
+const xSymbol = document.querySelector(".fa-solid.fa-x");
+const oSymbol = document.querySelector(".fa-solid.fa-o");
+const swapSymbolsButton = document.querySelector("[data-swap-symbols]");
 const winning_combinations = [
   [0, 1, 2],
   [0, 4, 8],
@@ -41,6 +44,11 @@ let oScore = 0;
 
 gameStart();
 readBoardData();
+
+swapSymbolsButton.addEventListener("click", () => {
+  swapNames();
+  swapScores();
+});
 
 undoButton.addEventListener("click", () => {
   undoMove();
@@ -181,7 +189,7 @@ function gameStart() {
   });
   showHoverClass();
   resultMessage.classList.remove("show");
-  // console.log("board", board_data);
+  console.log("board", board_data);
   console.log("start history", history_data);
 }
 
@@ -189,9 +197,11 @@ function gameEnd(draw) {
   if (draw) {
     winningMessage.innerText = "Draw!";
   } else {
+    checkPlayerNames();
     addScore();
-    winningMessage.innerText = `${xTurn ? "X" : "O"} Wins!`;
   }
+  console.log("x total", xScore);
+  console.log("o total", oScore);
   resultMessage.classList.add("show");
   // setTimeout(() => {
   //   resultMessage.classList.add("show");
@@ -218,11 +228,81 @@ function addScore() {
   if (xTurn) {
     xScore++;
     xPlayerScore.innerText = xScore;
-    xCurrentScore = xScore;
-    console.log(xCurrentScore);
   } else if (!xTurn) {
     oScore++;
     oPlayerScore.innerText = oScore;
-    oCurrentScore = oScore;
+  }
+}
+
+function checkPlayerNames() {
+  noPlayerNameInputs = xPlayerName.value === "" && oPlayerName.value === "";
+  xPlayerNameInput = xPlayerName.value !== "";
+  oPlayerNameInput = oPlayerName.value !== "";
+  bothPlayerNameInput = xPlayerNameInput && oPlayerNameInput;
+  winningMessage.innerText = noPlayerNameInputs
+    ? `${xTurn ? "X" : "O"} Wins!`
+    : xPlayerNameInput && !oPlayerNameInput
+    ? `${xTurn ? xPlayerName.value : "O"} Wins!`
+    : oPlayerNameInput && !xPlayerNameInput
+    ? `${xTurn ? "X" : oPlayerName.value} Wins!`
+    : bothPlayerNameInput
+    ? `${xTurn ? xPlayerName.value : oPlayerName.value} Wins!`
+    : "";
+}
+
+// function swapSymbols() {
+//   if (xSymbol.className === "fa-solid fa-x") {
+//     xSymbol.classList.remove("fa-x");
+//     xSymbol.classList.add("fa-o");
+//     oSymbol.classList.remove("fa-o");
+//     oSymbol.classList.add("fa-x");
+//   } else {
+//     xSymbol.classList.remove("fa-o");
+//     xSymbol.classList.add("fa-x");
+//     oSymbol.classList.remove("fa-x");
+//     oSymbol.classList.add("fa-o");
+//   }
+// }
+
+function swapNames() {
+  let xNameSaver = xPlayerName.value;
+  let oNameSaver = oPlayerName.value;
+  if (xPlayerName.className === "xPlayerName") {
+    xPlayerName.classList.remove("xPlayerName");
+    xPlayerName.classList.add("oPlayerName");
+    oPlayerName.classList.remove("oPlayerName");
+    oPlayerName.classList.add("xPlayerName");
+    xPlayerName.value = oNameSaver;
+    oPlayerName.value = xNameSaver;
+  } else if (xPlayerName.className === "oPlayerName") {
+    xPlayerName.classList.remove("oPlayerName");
+    xPlayerName.classList.add("xPlayerName");
+    oPlayerName.classList.remove("xPlayerName");
+    oPlayerName.classList.add("oPlayerName");
+    xPlayerName.value = oNameSaver;
+    oPlayerName.value = xNameSaver;
+  }
+}
+function swapScores() {
+  let xCurrentScore = xScore;
+  let oCurrentScore = oScore;
+  if (xPlayerScore.className === "xScore") {
+    xPlayerScore.classList.remove("xScore");
+    xPlayerScore.classList.add("oScore");
+    oPlayerScore.classList.remove("oScore");
+    oPlayerScore.classList.add("xScore");
+    xScore = oCurrentScore;
+    oScore = xCurrentScore;
+    xPlayerScore.innerText = xScore;
+    oPlayerScore.innerText = oScore;
+  } else if (xPlayerScore.className === "oScore") {
+    xPlayerScore.classList.remove("oScore");
+    xPlayerScore.classList.add("xScore");
+    oPlayerScore.classList.remove("xScore");
+    oPlayerScore.classList.add("oScore");
+    xScore = oCurrentScore;
+    oScore = xCurrentScore;
+    xPlayerScore.innerText = xScore;
+    oPlayerScore.innerText = oScore;
   }
 }
