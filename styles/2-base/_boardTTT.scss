@@ -1,0 +1,47 @@
+.ticTacToe-container {
+  display: grid;
+  grid-template-columns: repeat(3, $squareSize);
+  grid-auto-flow: row;
+  justify-content: center;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+  width: $tttContainerWidth;
+  height: $tttContainerHeight;
+  margin: 0 auto;
+  margin-top: 1.5rem;
+  background-color: white;
+  border: 3px solid black;
+}
+.squares {
+  width: $squareSize;
+  height: $squareSize;
+  border: 2px solid black;
+  color: black;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+.squares:nth-child(1),
+.squares:nth-child(2),
+.squares:nth-child(3) {
+  border-top: none;
+}
+.squares:nth-child(7),
+.squares:nth-child(8),
+.squares:nth-child(9) {
+  border-bottom: none;
+}
+.squares:nth-child(1),
+.squares:nth-child(4),
+.squares:nth-child(7) {
+  border-left: none;
+}
+.squares:nth-child(3),
+.squares:nth-child(6),
+.squares:nth-child(9) {
+  border-right: none;
+}

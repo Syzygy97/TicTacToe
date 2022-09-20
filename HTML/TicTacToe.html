@@ -16,22 +16,21 @@
       <span class="xSymbol">
         <i class="fa-solid fa-x"></i>
       </span>
+      <span class="hyphen">-</span>
+      <span class="xScore">0</span>
+      <span class="oScore">0</span>
+      <span class="hyphen">-</span>
       <span class="oSymbol">
         <i class="fa-solid fa-o"></i>
       </span>
     </div>
     <header class="scoresAndNames">
-      <span class="xScore">0</span>
       <input type="text" class="xPlayerName" autocomplete="off" placeholder="enter name">
-      <span class="swapButton" data-swap-button>
-        <!-- <i class="fa-solid fa-arrow-right-arrow-left"></i> -->
-        &#8644
-      </span>
+      <span class="swapButton" data-swap-button>&#8644</span>
       <input type="text" class="oPlayerName" autocomplete="off" placeholder="enter name">
-      <span class="oScore">0</span>
     </header>
     <figure class="ticTacToe-container" id="ticTacToe-container">
-      <div class="squares x" data-square></div>
+      <div class="squares" data-square></div>
       <div class="squares" data-square></div>
       <div class="squares" data-square></div>
       <div class="squares" data-square></div>
@@ -41,15 +40,15 @@
       <div class="squares" data-square></div>
       <div class="squares" data-square></div>
     </figure>
-    <footer class="options show">
-      <button class="undo" data-undo-button>UNDO &#8630</button>
+    <footer class="options">
+      <button class="undo" data-undo-button>PREVIOUS &#8630</button>
       <button class="restartBtn" data-restart-button>RESTART &#10226</button>
-      <button class="redo" data-redo-button>REDO &#8631</button>
+      <button class="redo" data-redo-button>NEXT &#8631</button>
     </footer>
     <div class="result" id="result">
       <div data-winner></div>
       <div class="undoRestartButton">
-        <button class="undoBtn">UNDO &#8630</button>
+        <button class="undoBtn">PREVIOUS &#8630</button>
         <button id="restartBtnInResults" >RESTART &#10226</button>
       </div>
     </div>

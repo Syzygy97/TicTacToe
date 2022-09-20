@@ -1,0 +1,52 @@
+.scoresAndNames > .swapButton {
+  cursor: pointer;
+  font-size: 2.5rem;
+  text-align: center;
+  width: 4ch;
+
+  font-weight: 1000;
+  transition: scale 200ms ease-out;
+}
+.swapButton:hover {
+  scale: 1.5;
+}
+
+.options > button {
+  cursor: pointer;
+  font-size: 1.4rem;
+  padding: 0.25rem 0.5rem;
+  padding-bottom: 0.1rem;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.result button {
+  font-size: 3rem;
+  padding: 0.75rem 1rem;
+}
+.result button,
+.options > button {
+  font-family: TechMono;
+  border: 3px solid black;
+  border-radius: 10px;
+  box-shadow: 3px 3px 8px black;
+  background: antiquewhite;
+  cursor: pointer;
+  transition: (color, background) 250ms ease-in, font-weight 250ms linear;
+}
+
+.result button:hover,
+.options > button:hover {
+  background: rgba(0, 0, 0, 0.9);
+  color: antiquewhite;
+  border-color: antiquewhite;
+  font-weight: 500;
+  box-shadow: 3px 3px 8px antiquewhite;
+}
+
+.result > .undoRestartButton {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}

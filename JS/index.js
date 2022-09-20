@@ -1,21 +1,25 @@
 const x_class = "x";
 const o_class = "o";
-const board = document.querySelector(".ticTacToe-container");
 const squares = document.querySelectorAll("[data-square]");
-const undoButton = document.querySelector("[data-undo-button]");
-const redoButton = document.querySelector("[data-redo-button]");
-const restartButton = document.querySelector("[data-restart-button]");
+const board = document.querySelector(".ticTacToe-container");
 const resultMessage = document.querySelector(".result");
 const winningMessage = document.querySelector("[data-winner]");
+const undoButton = document.querySelector("[data-undo-button]");
+const redoButton = document.querySelector("[data-redo-button]");
+const undoResultsButton = document.querySelector(".undoBtn");
+const restartButton = document.querySelector("[data-restart-button]");
 const restartButtonInResults = document.querySelector("#restartBtnInResults");
 const xPlayerScore = document.querySelector(".xScore");
 const oPlayerScore = document.querySelector(".oScore");
 const xPlayerName = document.querySelector(".xPlayerName");
 const oPlayerName = document.querySelector(".oPlayerName");
+const swapButton = document.querySelector("[data-swap-button]");
 const xSymbol = document.querySelector(".fa-solid.fa-x");
 const oSymbol = document.querySelector(".fa-solid.fa-o");
-const swapButton = document.querySelector("[data-swap-button]");
-const swapLogo = document.querySelector(".fa-solid.fa-arrow-right-arrow-left");
+
+const deepClone = (items) =>
+  items.map((item) => (Array.isArray(item) ? deepClone(item) : item));
+
 const winning_combinations = [
   [0, 1, 2],
   [0, 4, 8],
@@ -27,21 +31,20 @@ const winning_combinations = [
   [6, 7, 8],
 ];
 
-const deepClone = (items) =>
-  items.map((item) => (Array.isArray(item) ? deepClone(item) : item));
+let board_data = [
+  [0, 0, 0],
+  [0, 0, 0],
+  [0, 0, 0],
+];
 
-// let board_data = [
-//   [0, 0, 0],
-//   [0, 0, 0],
-//   [0, 0, 0],
-// ];
+let history_data = [];
+let xTurn;
 
-// let history_data = [];
-// let xTurn;
-let player = 1;
-let moves = 0;
 let xScore = 0;
 let oScore = 0;
+
+let moves = 0;
+let player = 1;
 
 gameStart();
 readBoardData();
@@ -54,6 +57,10 @@ swapButton.addEventListener("click", () => {
 undoButton.addEventListener("click", () => {
   undoMove();
 });
+undoResultsButton.addEventListener("click", () => {
+  undoMove();
+  resultMessage.classList.remove("show");
+});
 
 redoButton.addEventListener("click", () => {
   redoMove();
@@ -65,7 +72,6 @@ restartButtonInResults.addEventListener("click", gameStart);
 function clickEvent(e) {
   const cell = e.target;
   const currentClass = xTurn ? x_class : o_class;
-  // placeMark(cell, currentClass);
   storeBoardData(cell);
   readBoardData();
   if (checkForWin(currentClass)) {
@@ -76,8 +82,6 @@ function clickEvent(e) {
     changeTurns();
     showHoverClass();
   }
-  console.log("clicked - board", board_data);
-  console.log("clicked - history", history_data);
 }
 
 function storeBoardData(cell) {
@@ -89,8 +93,6 @@ function storeBoardData(cell) {
   history_data[moves] = deepClone(board_data);
   moves++;
   readHistoryData();
-  console.log("board", board_data);
-  console.log("history", history_data);
 }
 
 function readBoardData() {
@@ -110,67 +112,15 @@ function readBoardData() {
 
 function readHistoryData() {
   if (history_data.length > 0) {
-    undoButton.style.pointerEvents = "auto";
-    undoButton.style.opacity = "1";
+    enableUndoButton();
     swapButton.innerText = "V.S.";
     swapButton.style.pointerEvents = "none";
+  } else if (history_data.length === 0) {
+    disableUndoButton();
+    disableRedoButton();
+    swapButton.innerHTML = "&#8644";
+    swapButton.style.pointerEvents = "auto";
   }
-}
-
-function undoMove() {
-  console.log("undo");
-  // history_data[moves] = deepClone(board_data);
-  moves--;
-  board_data = history_data[moves - 1];
-  readBoardData();
-  console.log(moves);
-  console.log("board", board_data);
-  console.log("history", history_data);
-  console.log("moves", history_data[moves]);
-  // moves--;
-  // board_data = history_data[moves];
-  // readBoardData();
-  // console.log("moves undo", moves);
-  // console.log(board_data);
-  // console.log(history_data[moves]);
-  // history_data[moves] = deepClone(board_data);
-  // moves--;
-  // board_data_flatten = board_data.flat();
-  // console.log("board flattened", board_data.flat());
-  // console.log(board_data_flatten.lastIndexOf(1));
-  // const currentClass = xTurn ? x_class : o_class;
-  // readBoardData();
-  // history_data[moves] = deepClone(board_data);
-  // moves--;
-  // console.log("before", [history_data[moves]].flat());
-  // for (let row = 0; row < 3; row++) {
-  //   for (let col = 0; col < 3; col++) {
-  //     squares[row * 3 + col].classList.remove(currentClass);
-  //   }
-  // }
-  // history = history_data.pop();
-  // console.log("history after", history_data);
-  // history_data.lastIndexOf(moves) - 1;
-  // console.log(board_data);
-}
-
-function redoMove() {
-  console.log("redo");
-  moves++;
-  board_data = history_data[moves - 1];
-  readBoardData();
-  console.log(moves);
-  console.log("board", board_data);
-  console.log("history", history_data);
-  console.log("moves", history_data[moves]);
-}
-
-function placeMark(cell, currentClass) {
-  cell.classList.add(currentClass);
-}
-
-function changeTurns() {
-  xTurn = !xTurn;
 }
 
 function showHoverClass() {
@@ -183,8 +133,11 @@ function showHoverClass() {
   }
 }
 
+function changeTurns() {
+  xTurn = !xTurn;
+}
+
 function gameStart() {
-  console.log("restart");
   board_data = [
     [0, 0, 0],
     [0, 0, 0],
@@ -194,12 +147,7 @@ function gameStart() {
   moves = 0;
   player = 1;
   xTurn = true;
-  if (history_data.length === 0) {
-    undoButton.style.pointerEvents = "none";
-    undoButton.style.opacity = "0.5";
-    swapButton.innerHTML = "&#8644";
-    swapButton.style.pointerEvents = "auto";
-  }
+  readHistoryData();
   squares.forEach((square) => {
     square.classList.remove(x_class);
     square.classList.remove(o_class);
@@ -208,8 +156,6 @@ function gameStart() {
   });
   showHoverClass();
   resultMessage.classList.remove("show");
-  console.log("board", board_data);
-  console.log("start history", history_data);
 }
 
 function gameEnd(draw) {
@@ -220,9 +166,6 @@ function gameEnd(draw) {
     addScore();
   }
   resultMessage.classList.add("show");
-  // setTimeout(() => {
-  //   resultMessage.classList.add("show");
-  // }, 3000);
 }
 
 function checkForWin(currentClass) {
@@ -250,36 +193,6 @@ function addScore() {
     oPlayerScore.innerText = oScore;
   }
 }
-
-function checkPlayerNames() {
-  noPlayerNameInputs = xPlayerName.value === "" && oPlayerName.value === "";
-  xPlayerNameInput = xPlayerName.value !== "";
-  oPlayerNameInput = oPlayerName.value !== "";
-  bothPlayerNameInput = xPlayerNameInput && oPlayerNameInput;
-  winningMessage.innerText = noPlayerNameInputs
-    ? `${xTurn ? "X" : "O"} Wins!`
-    : xPlayerNameInput && !oPlayerNameInput
-    ? `${xTurn ? xPlayerName.value : "O"} Wins!`
-    : oPlayerNameInput && !xPlayerNameInput
-    ? `${xTurn ? "X" : oPlayerName.value} Wins!`
-    : bothPlayerNameInput
-    ? `${xTurn ? xPlayerName.value : oPlayerName.value} Wins!`
-    : "";
-}
-
-// function swapSymbols() {
-//   if (xSymbol.className === "fa-solid fa-x") {
-//     xSymbol.classList.remove("fa-x");
-//     xSymbol.classList.add("fa-o");
-//     oSymbol.classList.remove("fa-o");
-//     oSymbol.classList.add("fa-x");
-//   } else {
-//     xSymbol.classList.remove("fa-o");
-//     xSymbol.classList.add("fa-x");
-//     oSymbol.classList.remove("fa-x");
-//     oSymbol.classList.add("fa-o");
-//   }
-// }
 
 function swapNames() {
   let xNameSaver = xPlayerName.value;
@@ -322,4 +235,64 @@ function swapScores() {
     xPlayerScore.innerText = xScore;
     oPlayerScore.innerText = oScore;
   }
+}
+function checkPlayerNames() {
+  noPlayerNameInputs = xPlayerName.value === "" && oPlayerName.value === "";
+  xPlayerNameInput = xPlayerName.value !== "";
+  oPlayerNameInput = oPlayerName.value !== "";
+  bothPlayerNameInput = xPlayerNameInput && oPlayerNameInput;
+  winningMessage.innerText = noPlayerNameInputs
+    ? `${xTurn ? "X" : "O"} Wins!`
+    : xPlayerNameInput && !oPlayerNameInput
+    ? `${xTurn ? xPlayerName.value : "O"} Wins!`
+    : oPlayerNameInput && !xPlayerNameInput
+    ? `${xTurn ? "X" : oPlayerName.value} Wins!`
+    : bothPlayerNameInput
+    ? `${xTurn ? xPlayerName.value : oPlayerName.value} Wins!`
+    : "";
+}
+
+function undoMove() {
+  moves--;
+  if (moves === 0) {
+    board_data = [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0],
+    ];
+    disableUndoButton();
+    readBoardData();
+  } else {
+    board_data = history_data[moves - 1];
+    enableRedoButton();
+    readBoardData();
+  }
+}
+
+function redoMove() {
+  enableUndoButton();
+  moves++;
+  if (history_data[moves] === undefined) {
+    disableRedoButton();
+    readBoardData();
+  }
+  board_data = history_data[moves - 1];
+  readBoardData();
+}
+
+function disableUndoButton() {
+  undoButton.style.pointerEvents = "none";
+  undoButton.style.opacity = "0.5";
+}
+function enableUndoButton() {
+  undoButton.style.pointerEvents = "auto";
+  undoButton.style.opacity = "1";
+}
+function disableRedoButton() {
+  redoButton.style.pointerEvents = "none";
+  redoButton.style.opacity = "0.5";
+}
+function enableRedoButton() {
+  redoButton.style.pointerEvents = "auto";
+  redoButton.style.opacity = "1";
 }

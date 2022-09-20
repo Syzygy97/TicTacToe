@@ -1,3 +1,7 @@
+@font-face {
+  font-family: TechMono;
+  src: url(../../Fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf);
+}
 * {
   margin: 0;
   padding: 0;
@@ -5,23 +9,43 @@
 }
 
 body {
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.8);
   color: antiquewhite;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  font-family: TechMono;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-image: url(../../assets/tictactoebg.png);
+  background-size: cover;
+  opacity: 0.3;
+  z-index: -1;
 }
 
 .title {
   text-align: center;
-  font-size: 80px;
+  font-size: 5.5rem;
+  color: antiquewhite;
+  text-shadow: 5px 10px 8px black;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.9);
 }
 
 .markSymbols {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20rem;
+  gap: 3rem;
+  color: white;
+  margin: 0.5rem;
 }
 
 .markSymbols > span {
@@ -32,7 +56,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .scoresAndNames > span {
@@ -40,35 +64,39 @@ body {
   width: 2ch;
 }
 
+.hyphen {
+  color: white;
+}
+
 .scoresAndNames > input {
   background: transparent;
   outline: none;
   border: none;
-  border-bottom: 2px solid white;
-  font-size: 1.25rem;
-  max-width: 18ch;
+  border-bottom: 2.25px solid black;
+  font-size: 1.5rem;
+  font-family: TechMono;
+  max-width: 15ch;
   color: white;
   text-overflow: ellipsis;
   padding: 0.25rem 0.35rem;
 }
 
-.scoresAndNames > .swapButton {
-  cursor: pointer;
-  font-size: 2.5rem;
-  text-align: center;
-  width: 4ch;
-}
-
 .scoresAndNames > input::-moz-placeholder {
   font-size: 1rem;
+  color: black;
+  opacity: 0.6;
 }
 
 .scoresAndNames > input:-ms-input-placeholder {
   font-size: 1rem;
+  color: black;
+  opacity: 0.6;
 }
 
 .scoresAndNames > input::placeholder {
   font-size: 1rem;
+  color: black;
+  opacity: 0.6;
 }
 
 .ticTacToe-container {
@@ -82,8 +110,9 @@ body {
   width: 450px;
   height: 450px;
   margin: 0 auto;
-  margin-top: 2rem;
-  background-color: rgb(255, 255, 255);
+  margin-top: 1.5rem;
+  background-color: white;
+  border: 3px solid black;
 }
 
 .squares {
@@ -121,6 +150,14 @@ body {
 .squares:nth-child(6),
 .squares:nth-child(9) {
   border-right: none;
+}
+
+.options {
+  display: flex;
+  gap: 3.5rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.8rem;
 }
 
 .squares.x,
@@ -184,23 +221,9 @@ body {
   background: white;
 }
 
-.options {
-  gap: 3.5rem;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2.5rem;
-}
-
-.options > button {
-  cursor: pointer;
-  font-size: 1.25rem;
-  padding: 0.25rem 0.5rem;
-  padding-bottom: 0.1rem;
-  border-radius: 10px;
-}
-
 .result {
-  display: none;
+  display: flex;
+  opacity: 0;
   position: fixed;
   top: 0;
   right: 0;
@@ -211,6 +234,35 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 5rem;
+  transition: opacity 300ms ease-out;
+  pointer-events: none;
+}
+
+.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scoresAndNames > .swapButton {
+  cursor: pointer;
+  font-size: 2.5rem;
+  text-align: center;
+  width: 4ch;
+  font-weight: 1000;
+  transition: scale 200ms ease-out;
+}
+
+.swapButton:hover {
+  scale: 1.5;
+}
+
+.options > button {
+  cursor: pointer;
+  font-size: 1.4rem;
+  padding: 0.25rem 0.5rem;
+  padding-bottom: 0.1rem;
+  border-radius: 10px;
+  font-weight: 600;
 }
 
 .result button {
@@ -220,8 +272,10 @@ body {
 
 .result button,
 .options > button {
+  font-family: TechMono;
   border: 3px solid black;
   border-radius: 10px;
+  box-shadow: 3px 3px 8px black;
   background: antiquewhite;
   cursor: pointer;
   transition: color, background 250ms ease-in, font-weight 250ms linear;
@@ -233,10 +287,7 @@ body {
   color: antiquewhite;
   border-color: antiquewhite;
   font-weight: 500;
-}
-
-.show {
-  display: flex;
+  box-shadow: 3px 3px 8px antiquewhite;
 }
 
 .result > .undoRestartButton {

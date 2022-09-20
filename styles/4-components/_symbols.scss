@@ -1,0 +1,52 @@
+.squares.x,
+.squares.o {
+  cursor: not-allowed;
+}
+.squares.x::before,
+.squares.x::after,
+.squares.o::before,
+.squares.o::after {
+  background-color: black;
+}
+.ticTacToe-container.x .squares:not(.x):not(.o):hover::before,
+.ticTacToe-container.x .squares:not(.x):not(.o):hover::after,
+.ticTacToe-container.o .squares:not(.x):not(.o):hover::before,
+.ticTacToe-container.o .squares:not(.x):not(.o):hover::after {
+  background: rgb(180, 180, 180);
+}
+.squares.x::before,
+.squares.x::after,
+.ticTacToe-container.x .squares:not(.x):not(.o):hover::before,
+.ticTacToe-container.x .squares:not(.x):not(.o):hover::after {
+  content: "";
+  position: absolute;
+  width: calc($xoSize * 0.15);
+  height: $xoSize;
+}
+.squares.x::before,
+.ticTacToe-container.x .squares:not(.x):not(.o):hover::before {
+  rotate: (45deg);
+}
+.squares.x::after,
+.ticTacToe-container.x .squares:not(.x):not(.o):hover::after {
+  rotate: (-45deg);
+}
+.squares.o::before,
+.squares.o::after,
+.ticTacToe-container.o .squares:not(.x):not(.o):hover::before,
+.ticTacToe-container.o .squares:not(.x):not(.o):hover::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+.squares.o::before,
+.ticTacToe-container.o .squares:not(.x):not(.o):hover::before {
+  width: $xoSize;
+  height: $xoSize;
+}
+.squares.o::after,
+.ticTacToe-container.o .squares:not(.x):not(.o):hover::after {
+  width: calc($xoSize * 0.75);
+  height: calc($xoSize * 0.75);
+  background: white;
+}
